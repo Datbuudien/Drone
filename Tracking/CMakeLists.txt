@@ -16,6 +16,8 @@ qt_add_qml_module(appTracking
     URI Tracking
     QML_FILES
         Main.qml
+        SOURCES udpreceiver.h
+        SOURCES udpreceiver.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

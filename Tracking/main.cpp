@@ -1,10 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
+#include "udpreceiver.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
+    qmlRegisterType<UdpReceiver> ("DroneApp",1,0,"UdpReceiver");
     QQmlApplicationEngine engine;
     QObject::connect(
         &engine,
