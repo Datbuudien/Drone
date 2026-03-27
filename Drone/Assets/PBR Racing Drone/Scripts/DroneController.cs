@@ -26,7 +26,7 @@ public class DroneController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if(Keyboard.current.spaceKey.isPressed)
+        if(Keyboard.current.spaceKey.isPressed && PropellerController.isEngineOn)
         {
             rb.AddForce(Vector3.up*liftForce);
         }
