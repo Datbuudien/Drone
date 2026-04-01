@@ -6,10 +6,12 @@ using System.Text;
 public class DroneController : MonoBehaviour
 {
     [Header ("Drone Config")]
-    public float liftForce = 15f;
+    public float  currentLiftForce = 0f;
     private Rigidbody rb; 
     private UdpClient udpClient;
     private IPEndPoint endPoint;
+    public float acceleration = 1f;
+    public float maxLiftForce = 20f;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,7 +30,13 @@ public class DroneController : MonoBehaviour
     {
         if(Keyboard.current.spaceKey.isPressed && PropellerController.isEngineOn)
         {
-            rb.AddForce(Vector3.up*liftForce);
+            currentLiftForce = Mathf.MoveTowards(currentLiftForce,maxLiftForce,acceleration*Time.fixedDeltaTime);
+            rb.AddForce(Vector3.up*currentLiftForce);
+        }
+        else
+        {
+            currentLiftForce = Mathf.MoveTowards(currentLiftForce,0,acceleration*Time.fixedDeltaTime);
+            rb.AddForce(Vector3.up*currentLiftForce);
         }
     }
     void OnApplicationQuit()
