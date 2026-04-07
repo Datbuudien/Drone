@@ -4,17 +4,18 @@ class CameraFollow : MonoBehaviour
     [Header("Target")]
     public Transform target;
     public Vector3 offset = new Vector3(0,0.5f,-1.0f);
-    public float smoothSpeed = 5.0f;
+    public float smoothSpeed = 0.1f;
     // public float X = 0.75f;
     // public float Y = 0.75f;
     // public float Z = 0.75f;
+    private Vector3 velocity = Vector3.zero;
     void LateUpdate(){
         if(target == null) return;
         // Vector3 flatForward = target.forward; 
         // flatForward.y = 0; 
         // flatForward.Normalize();
         Vector3 desiredPosition = target.TransformPoint(offset);
-        transform.position = Vector3.Lerp(transform.position,desiredPosition,smoothSpeed*Time.deltaTime);
+        transform.position = Vector3.SmoothDamp(transform.position,desiredPosition,ref velocity,smoothSpeed*Time.deltaTime);
 
         // Debug.DrawRay(transform.position, transform.forward * 15f, Color.red);
         // Debug.DrawRay(target.position, target.forward * 15f, Color.green);
