@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Net; 
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 public class DroneController : MonoBehaviour
 {
     [Header ("Drone Config")]
     public float  currentLiftForce = 0f;
-    private Rigidbody rb; 
+    private Rigidbody rb;
     private UdpClient udpClient;
     private IPEndPoint endPoint;
     public float acceleration = 1f;
@@ -21,7 +21,7 @@ public class DroneController : MonoBehaviour
     void Update()
     {
         Vector3 pos = transform.position;
-        Debug.Log($"X : {pos.x:F2}  Y : {pos.y:F2}   Z : {pos.z:F2} ");   
+        Debug.Log($"X : {pos.x:F2}  Y : {pos.y:F2}   Z : {pos.z:F2} ");
         string mess = $"X:{pos.x:F2}  Y: {pos.y:F2}  Z: {pos.z:F2} ";
         byte[] bytes = Encoding.UTF8.GetBytes(mess);
         udpClient.Send(bytes,bytes.Length,endPoint);
