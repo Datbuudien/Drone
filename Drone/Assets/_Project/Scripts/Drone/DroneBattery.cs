@@ -30,6 +30,7 @@ namespace DroneSim.Drone
         {
             float thrustRatio = rig.TotalThrust / hoverThrust;
             model.Drain(thrustRatio, Time.fixedDeltaTime);
+            rig.SetThrustScale(ThrustScale);
         }
 
         public float StateOfCharge => model.StateOfCharge;

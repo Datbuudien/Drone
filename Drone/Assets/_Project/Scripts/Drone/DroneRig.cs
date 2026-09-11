@@ -12,11 +12,11 @@ namespace DroneSim.Drone
         [SerializeField] private Rigidbody body;
         [SerializeField] private RotorUnit[] rotors;
         [SerializeField] private DroneConfig config;
-        [SerializeField] private DroneBattery battery;
 
         private Transform tf;
         private float throttleCommand;
         private Vector3 axisCommand;
+        private float thrustScale = 1f;
 
         void Awake()
         {
@@ -43,7 +43,7 @@ namespace DroneSim.Drone
         void FixedUpdate()
         {
             float deltaTime = Time.fixedDeltaTime;
-            float maxThrust = config.Thrust.MaxThrustPerRotor * battery.ThrustScale;
+            float maxThrust = config.Thrust.MaxThrustPerRotor * thrustScale;
             float totalThrust = 0f;
             float yawThrustDifference = 0f;
 
@@ -81,6 +81,11 @@ namespace DroneSim.Drone
         {
             throttleCommand = throttle;
             axisCommand = rollPitchYaw;
+        }
+
+        public void SetThrustScale(float normalizedScale)
+        {
+            thrustScale = Mathf.Clamp01(normalizedScale);
         }
     }
 }
