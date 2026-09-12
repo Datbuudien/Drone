@@ -51,11 +51,12 @@ namespace DroneSim.Drone
                 ? ComputeAngleModeRate()
                 : ComputeAcroRate();
             Vector3 currentRate = tf.InverseTransformDirection(rig.Body.angularVelocity) * Mathf.Rad2Deg;
+            float rateScale = Mathf.Max(config.Pid.MaxYawRate, DroneSim.Core.Constants.MIN_POSITIVE_VALUE);
 
             Vector3 command = new Vector3(
-                rollRatePid.Step(desiredRate.x - currentRate.z, deltaTime),
-                pitchRatePid.Step(desiredRate.y - currentRate.x, deltaTime),
-                yawRatePid.Step(desiredRate.z - currentRate.y, deltaTime));
+                rollRatePid.Step((desiredRate.x - currentRate.z) / rateScale, deltaTime),
+                pitchRatePid.Step((desiredRate.y - currentRate.x) / rateScale, deltaTime),
+                yawRatePid.Step((desiredRate.z - currentRate.y) / rateScale, deltaTime));
 
             rig.SetCommands(input.Throttle, command);
         }

@@ -17,6 +17,7 @@ namespace DroneSim.Drone
         private float throttleCommand;
         private Vector3 axisCommand;
         private float thrustScale = 1f;
+        private bool isArmed;
 
         void Awake()
         {
@@ -46,6 +47,7 @@ namespace DroneSim.Drone
             float maxThrust = config.Thrust.MaxThrustPerRotor * thrustScale;
             float totalThrust = 0f;
             float yawThrustDifference = 0f;
+            float minimumCommand = isArmed ? Constants.ARMED_IDLE_COMMAND : 0f;
 
             for (int i = 0; i < rotors.Length; i++)
             {
@@ -56,10 +58,8 @@ namespace DroneSim.Drone
                 float pitchTerm = -Mathf.Sign(localPosition.z) * axisCommand.y;
                 float yawTerm = (rotor.Clockwise ? -1f : 1f) * axisCommand.z;
 
-                rotor.SetCommand(
-                    throttleCommand + rollTerm + pitchTerm + yawTerm,
-                    maxThrust,
-                    deltaTime);
+                float mixedCommand = throttleCommand + rollTerm + pitchTerm + yawTerm;
+                rotor.SetCommand(Mathf.Clamp(mixedCommand, minimumCommand, 1f), maxThrust, deltaTime);
 
                 body.AddForceAtPosition(
                     tf.up * rotor.CurrentThrust,
@@ -79,8 +79,21 @@ namespace DroneSim.Drone
 
         public void SetCommands(float throttle, Vector3 rollPitchYaw)
         {
-            throttleCommand = throttle;
-            axisCommand = rollPitchYaw;
+            throttleCommand = Mathf.Clamp01(throttle);
+            axisCommand = new Vector3(
+                Mathf.Clamp(rollPitchYaw.x, -Constants.MAX_AXIS_MIX_COMMAND, Constants.MAX_AXIS_MIX_COMMAND),
+                Mathf.Clamp(rollPitchYaw.y, -Constants.MAX_AXIS_MIX_COMMAND, Constants.MAX_AXIS_MIX_COMMAND),
+                Mathf.Clamp(rollPitchYaw.z, -Constants.MAX_AXIS_MIX_COMMAND, Constants.MAX_AXIS_MIX_COMMAND));
+        }
+
+        public void SetArmed(bool armed)
+        {
+            isArmed = armed;
+
+            if (isArmed) return;
+
+            throttleCommand = 0f;
+            axisCommand = Vector3.zero;
         }
 
         public void SetThrustScale(float normalizedScale)

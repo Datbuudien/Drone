@@ -58,6 +58,16 @@ namespace DroneSim.Tests
         }
 
         [Test]
+        public void PidController_FirstSample_DoesNotCreateDerivativeKick()
+        {
+            PidController controller = new PidController(0f, 0f, 1f, 0.3f);
+
+            float output = controller.Step(1f, 0.02f);
+
+            Assert.That(Mathf.Approximately(output, 0f), Is.True);
+        }
+
+        [Test]
         public void BatteryModel_FullDrain_ReachesZero()
         {
             BatteryModel model = new BatteryModel(1f, 14.8f, 12.8f, 1f);

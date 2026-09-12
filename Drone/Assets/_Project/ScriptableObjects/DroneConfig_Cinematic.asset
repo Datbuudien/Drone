@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60b63db726a2914fac5540e7a4580ad, type: 3}
+  m_Name: DroneConfig_Cinematic
+  m_EditorClassIdentifier: DroneSim.Runtime::DroneSim.Config.DroneConfig
+  massSpec:
+    Mass: 0.5
+    ArmLength: 0.12
+    CenterOfMass: {x: 0, y: 0, z: 0}
+    InertiaTensor: {x: 0.0045, y: 0.008, z: 0.0045}
+  thrustSpec:
+    MaxThrustPerRotor: 3
+    MotorResponseTime: 0.12
+    YawTorqueFactor: 0.018
+  aeroSpec:
+    DragCoefficientHorizontal: 0.9
+    DragCoefficientVertical: 1.3
+    ReferenceArea: 0.045
+    AngularDamping: 0.15
+  pidSpec:
+    RateKp: 0.09
+    RateKi: 0.04
+    RateKd: 0.0012
+    AngleP: 5
+    MaxTiltAngle: 35
+    MaxYawRate: 180
+    IntegralLimit: 0.3
+  batterySpec:
+    CapacityMilliAmpHours: 1500
+    NominalVoltage: 14.8
+    MinVoltage: 12.8
+    HoverCurrentAmp: 9

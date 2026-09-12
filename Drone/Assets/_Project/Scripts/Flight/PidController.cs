@@ -11,6 +11,7 @@ namespace DroneSim.Flight
 
         private float integral;
         private float previousError;
+        private bool hasPreviousError;
 
         public PidController(float kp, float ki, float kd, float integralLimit)
         {
@@ -27,8 +28,12 @@ namespace DroneSim.Flight
             integral = Math.Max(
                 -integralLimit,
                 Math.Min(integral + error * deltaTime, integralLimit));
-            float derivative = (error - previousError) / deltaTime;
+            float derivative = hasPreviousError
+                ? (error - previousError) / deltaTime
+                : 0f;
+
             previousError = error;
+            hasPreviousError = true;
 
             return kp * error + ki * integral + kd * derivative;
         }
@@ -37,6 +42,7 @@ namespace DroneSim.Flight
         {
             integral = 0f;
             previousError = 0f;
+            hasPreviousError = false;
         }
     }
 }

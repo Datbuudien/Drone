@@ -11,7 +11,13 @@ namespace DroneSim.Drone
 
         void OnEnable() => input.OnArmToggled += ToggleArm;
 
-        void OnDisable() => input.OnArmToggled -= ToggleArm;
+        void OnDisable()
+        {
+            input.OnArmToggled -= ToggleArm;
+            IsArmed = false;
+            rig.SetArmed(false);
+            input.ResetThrottle();
+        }
 
         public bool IsArmed { get; private set; }
 
@@ -22,6 +28,8 @@ namespace DroneSim.Drone
             if (IsArmed && rig.Body.linearVelocity.magnitude > groundedSpeedThreshold) return;
 
             IsArmed = !IsArmed;
+            rig.SetArmed(IsArmed);
+            input.ResetThrottle();
             OnArmStateChanged?.Invoke(IsArmed);
         }
     }

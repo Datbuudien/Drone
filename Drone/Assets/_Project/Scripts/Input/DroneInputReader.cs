@@ -42,7 +42,11 @@ namespace DroneSim.Input
 
         void Update()
         {
-            Throttle = throttleAction.ReadValue<float>();
+            float throttleChange = throttleAction.ReadValue<float>()
+                * Constants.THROTTLE_CHANGE_RATE
+                * Time.deltaTime;
+
+            Throttle = Mathf.Clamp01(Throttle + throttleChange);
             Pitch = pitchAction.ReadValue<float>();
             Roll = rollAction.ReadValue<float>();
             Yaw = yawAction.ReadValue<float>();
@@ -55,6 +59,11 @@ namespace DroneSim.Input
 
         public event System.Action OnArmToggled;
         public event System.Action OnFlightModeToggled;
+
+        public void ResetThrottle()
+        {
+            Throttle = 0f;
+        }
 
         private void HandleArm(InputAction.CallbackContext context) => OnArmToggled?.Invoke();
         private void HandleMode(InputAction.CallbackContext context) => OnFlightModeToggled?.Invoke();
