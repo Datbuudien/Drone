@@ -20,9 +20,9 @@ namespace DroneSim.Core
         public const string INPUT_ACTION_TOGGLE_ARM = "ToggleArm";
         public const string INPUT_ACTION_TOGGLE_FLIGHT_MODE = "ToggleFlightMode";
 
-        public const float THROTTLE_CHANGE_RATE = 0.5f;
+        public const float THROTTLE_CHANGE_RATE = 0.2f;
         public const float ARMED_IDLE_COMMAND = 0.08f;
-        public const float MAX_AXIS_MIX_COMMAND = 0.25f;
+        public const float MAX_AXIS_MIX_COMMAND = 0.12f;
 
         public const string TAG_GROUND = "Ground";
 
